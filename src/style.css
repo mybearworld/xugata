@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @theme {
+  --font-sans: Rubik, system-ui, sans-serif;
   --animate-fly-in: fly-in 0.2s;
 }
+
 @keyframes fly-in {
   from {
     opacity: 0;
@@ -12,4 +14,14 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@font-face {
+  font-family: Rubik;
+  src: url("./assets/rubik/Rubik-VariableFont_wght.ttf");
+}
+@font-face {
+  font-family: Rubik;
+  src: url("./assets/rubik/Rubik-Italic-VariableFont_wght.ttf");
+  font-style: italic;
 }
