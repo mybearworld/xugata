@@ -12,6 +12,22 @@ export type GameState = "ongoing" | "success" | "fail";
 export const WORD_LENGTH = 5;
 export const MAX_GUESSES = 6;
 
+export const stringifyEvaluations = (evaluations: Evaluation[]) => {
+  const lines: string[] = [];
+  evaluations.forEach((evaluation) => {
+    lines.push(
+      evaluation
+        .map((letter) => {
+          if (letter.color === "green") return "🟩";
+          if (letter.color === "yellow") return "🟨";
+          if (letter.color === "gray") return "⬛";
+        })
+        .join(""),
+    );
+  });
+  return lines.join("\n");
+};
+
 export const newGame = (word: string) => {
   let gameState: GameState = "ongoing";
   const evaluations: Evaluation[] = [];

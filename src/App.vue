@@ -80,7 +80,7 @@ onBeforeUnmount(() => {
     <StatsModal
       :word="word"
       :success="gameState === 'success'"
-      :todaysGuesses="guesses.length"
+      :evaluations="guesses"
       v-if="gameState !== 'ongoing' && !animationOngoing"
     />
   </div>
