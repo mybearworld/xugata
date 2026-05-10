@@ -5,7 +5,7 @@ export type Word = {
   number: number;
 };
 
-const SEED = 1778404414407;
+const SEED = 1778431252292;
 export const NOW = new Date();
 
 export const isISOToday = (date: Date) =>
