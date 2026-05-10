@@ -81,7 +81,7 @@ export const newGame = (word: string) => {
       this.evaluations.push(evaluation);
       this.state =
         guess === word ? "success"
-        : this.evaluations.length + 1 === MAX_GUESSES ? "fail"
+        : this.evaluations.length === MAX_GUESSES ? "fail"
         : "ongoing";
       if (this.state === "success") {
         addGuessAmount(this.evaluations.length);

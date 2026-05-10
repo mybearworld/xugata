@@ -102,7 +102,7 @@ const copyStats = () => {
           }}
           to guess
         </span>
-        <span v-else> Better luck next time! The word was</span>
+        <span v-else>Better luck next time! The word was{{ " " }}</span>
         <a
           :href="`https://batelu.sushii64.com/words?word=${props.word}`"
           class="text-blue-300 uppercase hover:underline"
