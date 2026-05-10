@@ -7,28 +7,28 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-2">
-    <div class="flex gap-2">
+  <div class="flex flex-col items-center gap-1">
+    <div class="flex gap-1">
       <button
-        class="flex h-10 w-10 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
+        class="flex h-12 w-8 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
         @click="() => emit('type', letter)"
         v-for="letter in 'qwertyuiop'"
       >
         {{ letter }}
       </button>
     </div>
-    <div class="flex gap-2">
+    <div class="flex gap-1">
       <button
-        class="flex h-10 w-10 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
+        class="flex h-12 w-8 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
         @click="() => emit('type', letter)"
         v-for="letter in 'asdfghjkl'"
       >
         {{ letter }}
       </button>
     </div>
-    <div class="flex gap-2">
+    <div class="flex gap-1">
       <button
-        class="flex h-10 w-10 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
+        class="flex h-12 w-8 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
         @click="emit('backspace')"
         aria-label="Backspace"
       >
@@ -52,14 +52,14 @@ const emit = defineEmits<{
         </svg>
       </button>
       <button
-        class="flex h-10 w-10 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
+        class="flex h-12 w-8 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
         @click="() => emit('type', letter)"
         v-for="letter in 'zxcvbnm'"
       >
         {{ letter }}
       </button>
       <button
-        class="flex h-10 w-10 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
+        class="flex h-12 w-8 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
         @click="() => emit('submit')"
         aria-label="Submit"
       >
