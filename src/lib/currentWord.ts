@@ -1,9 +1,9 @@
 import data from "./data.json";
 
 const SEED = 1778404414407;
-const NOW = new Date();
+export const NOW = new Date();
 
-const isISOToday = (date: Date) =>
+export const isISOToday = (date: Date) =>
   date.getUTCDate() === NOW.getUTCDate() &&
   date.getUTCMonth() === NOW.getUTCMonth() &&
   date.getUTCDate() === NOW.getUTCDate();

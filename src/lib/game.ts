@@ -1,9 +1,10 @@
 import data from "./data.json";
-import { addGuessAmount } from "./storage";
+import { addGuessAmount, setGameProgress } from "./storage";
 
 export type Game = {
   state: GameState;
   evaluations: Evaluation[];
+  guesses: string[];
   guess: (guess: string) => { error: true; msg: string } | { error: false };
 };
 export type Evaluation = ColoredLetter[];
@@ -33,10 +34,11 @@ export const stringifyEvaluations = (evaluations: Evaluation[]) => {
   return lines.join("\n");
 };
 
-export const newGame = (word: string) => {
+export const newGame = (word: string, guesses: string[] | null) => {
   const game: Game = {
     state: "ongoing",
     evaluations: [],
+    guesses: [],
     guess(guess) {
       if (this.state !== "ongoing") {
         return { error: true, msg: "Game is over" };
@@ -86,8 +88,13 @@ export const newGame = (word: string) => {
       if (this.state === "success") {
         addGuessAmount(this.evaluations.length);
       }
+      this.guesses.push(guess);
+      setGameProgress(this.guesses);
       return { error: false };
     },
   };
+  guesses?.forEach((guess) => {
+    game.guess(guess);
+  });
   return game;
 };

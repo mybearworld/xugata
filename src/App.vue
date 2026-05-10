@@ -6,11 +6,12 @@ import GameGrid from "./components/GameGrid.vue";
 import MobileKeyboard from "./components/MobileKeyboard.vue";
 import StatsModal from "./components/StatsModal.vue";
 import { ANIMATION_DURATION } from "./lib/animationDuration.ts";
+import { getGameProgress } from "./lib/storage.ts";
 
 const BATELU_LETTER = /^[a-pr-z]$/;
 
 const word = currentWord();
-const game = reactive(newGame(word));
+const game = reactive(newGame(word, getGameProgress()));
 const input = ref("");
 const animationOngoing = ref(false);
 
