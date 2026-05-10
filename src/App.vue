@@ -13,6 +13,7 @@ import GameGrid from "./components/GameGrid.vue";
 import MobileKeyboard from "./components/MobileKeyboard.vue";
 import StatsModal from "./components/StatsModal.vue";
 import HowToPlayModal from "./components/HowToPlayModal.vue";
+import Toast from "./components/Toast.vue";
 import { ANIMATION_DURATION } from "./lib/animationDuration.ts";
 import {
   getGameProgress,
@@ -40,6 +41,12 @@ watch(game.letterState, () => {
     letterStateForKeyboard.value = new Map(game.letterState);
   }, ANIMATION_DURATION);
 });
+const toastMessage = ref<string>("");
+const toastMessageCounter = ref<number>(0);
+const showToast = (message: string) => {
+  toastMessage.value = message;
+  toastMessageCounter.value++;
+};
 
 const openHowToPlay = () => {
   howToPlayOpen.value = true;
@@ -51,7 +58,7 @@ const openStats = () => {
 const makeGuess = () => {
   const guess = game.guess(input.value);
   if (guess.error) {
-    alert(guess.msg);
+    showToast(guess.msg);
     return;
   }
   input.value = "";
@@ -124,5 +131,9 @@ onBeforeUnmount(() => {
     />
     <HowToPlayModal v-model:open="howToPlayOpen" />
     <StatsModal :game="game" v-model:open="statsOpen" v-if="canShowStats" />
+    <Toast
+      v-model:message="toastMessage"
+      v-model:counter="toastMessageCounter"
+    />
   </div>
 </template>
