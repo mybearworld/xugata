@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import {
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from "vue";
 import { currentWord } from "./lib/currentWord.ts";
 import { newGame, WORD_LENGTH } from "./lib/game.ts";
 import GameGrid from "./components/GameGrid.vue";
@@ -7,7 +14,11 @@ import MobileKeyboard from "./components/MobileKeyboard.vue";
 import StatsModal from "./components/StatsModal.vue";
 import HowToPlayModal from "./components/HowToPlayModal.vue";
 import { ANIMATION_DURATION } from "./lib/animationDuration.ts";
-import { getGameProgress, getSeenHowToPlay } from "./lib/storage.ts";
+import {
+  getGameProgress,
+  getSeenHowToPlay,
+  setSeenHowToPlay,
+} from "./lib/storage.ts";
 
 const BATELU_LETTER = /^[a-pr-z]$/;
 
@@ -20,6 +31,9 @@ const statsOpen = ref(true);
 const canShowStats = computed(
   () => game.state !== "ongoing" && !animationOngoing.value,
 );
+watch(howToPlayOpen, () => {
+  if (!howToPlayOpen.value) setSeenHowToPlay();
+});
 
 const openHowToPlay = () => {
   howToPlayOpen.value = true;

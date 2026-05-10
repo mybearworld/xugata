@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import Modal from "./Modal.vue";
 import GameRow from "./GameRow.vue";
-import { setSeenHowToPlay } from "../lib/storage";
 
 const open = defineModel<boolean>("open");
 const close = () => {
   open.value = false;
-  setSeenHowToPlay();
 };
 </script>
 
