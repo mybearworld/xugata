@@ -6,6 +6,7 @@ export type Game = {
   state: GameState;
   evaluations: Evaluation[];
   guesses: string[];
+  letterState: LetterState;
   word: Word;
   guess: (guess: string) => { error: true; msg: string } | { error: false };
 };
@@ -16,6 +17,14 @@ export type ColoredLetter = {
 };
 export type LetterColor = "gray" | "green" | "yellow";
 export type GameState = "ongoing" | "success" | "fail";
+export type LetterState = Map<string, LetterColor>;
+
+const higherColor = (a: LetterColor | undefined, b: LetterColor) => {
+  if (!a) return b;
+  if (a === "green" || b === "green") return "green";
+  if (a === "yellow" || b === "yellow") return "yellow";
+  return "gray";
+};
 
 export const WORD_LENGTH = 5;
 export const MAX_GUESSES = 6;
@@ -44,6 +53,7 @@ export const newGame = (word: Word, guesses: string[] | null) => {
     state: "ongoing",
     evaluations: [],
     guesses: [],
+    letterState: new Map(),
     word,
     guess(guess) {
       if (this.state !== "ongoing") {
@@ -86,6 +96,15 @@ export const newGame = (word: Word, guesses: string[] | null) => {
           color: colors.get(i) || "gray",
         }),
       );
+      evaluation.forEach((evaluation) => {
+        this.letterState.set(
+          evaluation.letter,
+          higherColor(
+            this.letterState.get(evaluation.letter),
+            evaluation.color,
+          ),
+        );
+      });
       this.evaluations.push(evaluation);
       this.state =
         guess === word.word ? "success"

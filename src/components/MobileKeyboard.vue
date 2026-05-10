@@ -1,16 +1,30 @@
 <script setup lang="ts">
+import type { LetterState } from "../lib/game";
+
+const props = defineProps<{
+  letterState: LetterState;
+}>();
 const emit = defineEmits<{
   type: [letter: string];
   backspace: [];
   submit: [];
 }>();
+
+const colorFor = (letter: string) => {
+  const state = props.letterState.get(letter);
+  if (state === "gray" || letter === "q") return "bg-stone-700";
+  if (state === "green") return "bg-lime-800";
+  if (state === "yellow") return "bg-yellow-700";
+  return "bg-stone-600";
+};
 </script>
 
 <template>
   <div class="flex flex-col items-center gap-1">
     <div class="flex gap-1">
       <button
-        class="flex h-12 w-8 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
+        class="flex h-12 w-8 cursor-pointer items-center justify-center text-xl uppercase"
+        :class="colorFor(letter)"
         @click="() => emit('type', letter)"
         v-for="letter in 'qwertyuiop'"
       >
@@ -19,7 +33,8 @@ const emit = defineEmits<{
     </div>
     <div class="flex gap-1">
       <button
-        class="flex h-12 w-8 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
+        class="flex h-12 w-8 cursor-pointer items-center justify-center text-xl uppercase"
+        :class="colorFor(letter)"
         @click="() => emit('type', letter)"
         v-for="letter in 'asdfghjkl'"
       >
@@ -52,7 +67,8 @@ const emit = defineEmits<{
         </svg>
       </button>
       <button
-        class="flex h-12 w-8 cursor-pointer items-center justify-center bg-stone-600 text-xl uppercase"
+        class="flex h-12 w-8 cursor-pointer items-center justify-center text-xl uppercase"
+        :class="colorFor(letter)"
         @click="() => emit('type', letter)"
         v-for="letter in 'zxcvbnm'"
       >

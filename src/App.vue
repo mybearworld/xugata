@@ -8,7 +8,7 @@ import {
   watch,
 } from "vue";
 import { currentWord } from "./lib/currentWord.ts";
-import { newGame, WORD_LENGTH } from "./lib/game.ts";
+import { newGame, WORD_LENGTH, type LetterState } from "./lib/game.ts";
 import GameGrid from "./components/GameGrid.vue";
 import MobileKeyboard from "./components/MobileKeyboard.vue";
 import StatsModal from "./components/StatsModal.vue";
@@ -33,6 +33,12 @@ const canShowStats = computed(
 );
 watch(howToPlayOpen, () => {
   if (!howToPlayOpen.value) setSeenHowToPlay();
+});
+const letterStateForKeyboard = ref<LetterState>(new Map(game.letterState));
+watch(game.letterState, () => {
+  setTimeout(() => {
+    letterStateForKeyboard.value = new Map(game.letterState);
+  }, ANIMATION_DURATION);
 });
 
 const openHowToPlay = () => {
@@ -111,6 +117,7 @@ onBeforeUnmount(() => {
     </header>
     <GameGrid :evaluations="game.evaluations" :input />
     <MobileKeyboard
+      :letterState="letterStateForKeyboard"
       @type="addLetter"
       @backspace="backspace"
       @submit="makeGuess"
