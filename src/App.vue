@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, reactive, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { currentWord } from "./lib/currentWord.ts";
 import { newGame, WORD_LENGTH } from "./lib/game.ts";
 import GameGrid from "./components/GameGrid.vue";
 import MobileKeyboard from "./components/MobileKeyboard.vue";
 import StatsModal from "./components/StatsModal.vue";
+import HowToPlayModal from "./components/HowToPlayModal.vue";
 import { ANIMATION_DURATION } from "./lib/animationDuration.ts";
-import { getGameProgress } from "./lib/storage.ts";
+import { getGameProgress, getSeenHowToPlay } from "./lib/storage.ts";
 
 const BATELU_LETTER = /^[a-pr-z]$/;
 
@@ -14,6 +15,18 @@ const word = currentWord();
 const game = reactive(newGame(word, getGameProgress()));
 const input = ref("");
 const animationOngoing = ref(false);
+const howToPlayOpen = ref(!getSeenHowToPlay());
+const statsOpen = ref(true);
+const canShowStats = computed(
+  () => game.state !== "ongoing" && !animationOngoing.value,
+);
+
+const openHowToPlay = () => {
+  howToPlayOpen.value = true;
+};
+const openStats = () => {
+  statsOpen.value = true;
+};
 
 const makeGuess = () => {
   const guess = game.guess(input.value);
@@ -62,16 +75,33 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex h-screen flex-col items-center justify-center gap-5">
-    <h1 class="text-2xl">Xugata</h1>
+    <header class="text-center">
+      <h1 class="text-2xl">Xugata</h1>
+      <div>
+        <button
+          class="cursor-pointer text-blue-300 hover:underline"
+          @click="openHowToPlay"
+        >
+          How to play
+        </button>
+        <template v-if="canShowStats">
+          ·
+          <button
+            class="cursor-pointer text-blue-300 hover:underline"
+            @click="openStats"
+          >
+            Statistics
+          </button>
+        </template>
+      </div>
+    </header>
     <GameGrid :evaluations="game.evaluations" :input />
     <MobileKeyboard
       @type="addLetter"
       @backspace="backspace"
       @submit="makeGuess"
     />
-    <StatsModal
-      :game="game"
-      v-if="game.state !== 'ongoing' && !animationOngoing"
-    />
+    <HowToPlayModal v-model:open="howToPlayOpen" />
+    <StatsModal :game="game" v-model:open="statsOpen" v-if="canShowStats" />
   </div>
 </template>

@@ -12,6 +12,7 @@ const STORAGE_SCHEMA = z.object({
       guesses: z.string().array(),
     })
     .nullable(),
+  seenHowToPlay: z.boolean(),
 });
 
 const getFromStorage = () => {
@@ -26,6 +27,7 @@ const getFromStorage = () => {
       guesses: {},
     },
     gameProgress: null,
+    seenHowToPlay: false,
   } satisfies z.infer<typeof STORAGE_SCHEMA>;
 };
 const storage = getFromStorage();
@@ -54,5 +56,12 @@ export const setGameProgress = (guesses: string[]) => {
     date: NOW,
     guesses,
   };
+  writeToStorage();
+};
+
+export const getSeenHowToPlay = () => storage.seenHowToPlay;
+
+export const setSeenHowToPlay = () => {
+  storage.seenHowToPlay = true;
   writeToStorage();
 };
