@@ -1,9 +1,6 @@
 import data from "./data.json";
 
-export type Evaluation = {
-  letters: ColoredLetter[];
-  gameState: GameState;
-};
+export type Evaluation = ColoredLetter[];
 export type ColoredLetter = {
   letter: string;
   color: LetterColor;
@@ -22,7 +19,7 @@ export const newGame = (word: string) => {
       guess: string,
     ):
       | { error: true; msg: string }
-      | { error: false; evaluation: Evaluation } => {
+      | { error: false; evaluation: Evaluation; gameState: GameState } => {
       if (gameState !== "ongoing") {
         return { error: true, msg: "Game is over" };
       }
@@ -57,19 +54,18 @@ export const newGame = (word: string) => {
         wordCandidates.splice(wordIndex, 1);
         colors.set(i, "yellow");
       });
-      const letters = guessArray.map(
+      const evaluation = guessArray.map(
         (guessLetter, i): ColoredLetter => ({
           letter: guessLetter,
           color: colors.get(i) || "gray",
         }),
       );
+      evaluations.push(evaluation);
       gameState =
         guess === word ? "success"
         : evaluations.length + 1 === MAX_GUESSES ? "fail"
         : "ongoing";
-      const evaluation: Evaluation = { letters, gameState };
-      evaluations.push(evaluation);
-      return { error: false, evaluation };
+      return { error: false, evaluation, gameState };
     },
   };
 };

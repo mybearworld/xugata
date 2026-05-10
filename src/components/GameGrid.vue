@@ -12,7 +12,7 @@ const props = defineProps<{
 <template>
   <div class="flex flex-col gap-1">
     <GameRow
-      :row="props.evaluations[row - 1]?.letters"
+      :evaluation="props.evaluations[row - 1]"
       :input="props.input"
       :renderInput="props.evaluations.length === row - 1"
       v-for="row in MAX_GUESSES"

@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { currentWord } from "./lib/currentWord.ts";
-import { type Evaluation, newGame, WORD_LENGTH } from "./lib/game.ts";
+import {
+  type Evaluation,
+  type GameState,
+  newGame,
+  WORD_LENGTH,
+} from "./lib/game.ts";
 import GameGrid from "./components/GameGrid.vue";
 
 const BATELU_LETTER = /^[a-pr-z]$/;
 
 const game = ref(newGame(currentWord()));
 const guesses = ref<Evaluation[]>([]);
+const gameState = ref<GameState>("ongoing");
 const input = ref("");
 
 const makeGuess = () => {
@@ -17,10 +23,12 @@ const makeGuess = () => {
     return;
   }
   guesses.value.push(guess.evaluation);
+  gameState.value = guess.gameState;
   input.value = "";
 };
 
 const keydownEventListener = (e: KeyboardEvent) => {
+  if (gameState.value !== "ongoing") return;
   switch (e.key) {
     case "Backspace":
       e.preventDefault();
