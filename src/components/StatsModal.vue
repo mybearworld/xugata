@@ -101,7 +101,7 @@ const copyStats = () => {
         <div class="w-2">{{ guessAmount }}</div>
         <div
           class="relative h-5 grow rounded-lg bg-stone-700"
-          :title="`${guesses[guessAmount]} out of ${totalGuesses} games`"
+          :title="`${guesses[guessAmount] ?? 0} out of ${totalGuesses} games`"
         >
           <div
             class="absolute h-5 w-[--width] rounded-lg"
@@ -110,7 +110,7 @@ const copyStats = () => {
               'bg-stone-500': props.game.evaluations.length !== guessAmount,
             }"
             :style="{
-              width: (guesses[guessAmount] / totalGuesses) * 100 + '%',
+              width: ((guesses[guessAmount] ?? 0) / totalGuesses) * 100 + '%',
             }"
           ></div>
         </div>
