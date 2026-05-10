@@ -52,7 +52,6 @@ export const newGame = (word: string) => {
       );
       guessArray.forEach((guessLetter, i) => {
         if (colors.has(i)) return;
-        console.log(guessLetter, wordCandidates);
         const wordIndex = wordCandidates.indexOf(guessLetter);
         if (wordIndex === -1) return;
         wordCandidates.splice(wordIndex, 1);
