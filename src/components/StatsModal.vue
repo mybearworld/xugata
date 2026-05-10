@@ -86,7 +86,11 @@ const copyStats = () => {
             :title="`${guesses[guessAmount]} out of ${totalGuesses} games`"
           >
             <div
-              class="absolute h-5 w-[--width] rounded-lg bg-lime-700"
+              class="absolute h-5 w-[--width] rounded-lg"
+              :class="{
+                'bg-lime-700': props.game.evaluations.length === guessAmount,
+                'bg-stone-500': props.game.evaluations.length !== guessAmount,
+              }"
               :style="{
                 width: (guesses[guessAmount] / totalGuesses) * 100 + '%',
               }"
