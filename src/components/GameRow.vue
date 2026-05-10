@@ -4,6 +4,8 @@ import { WORD_LENGTH } from "../lib/game";
 
 const props = defineProps<{
   row: ColoredLetter[] | undefined;
+  input: string;
+  renderInput: boolean;
 }>();
 </script>
 
@@ -19,7 +21,10 @@ const props = defineProps<{
       }"
       v-for="col in WORD_LENGTH"
     >
-      {{ row?.[col - 1]?.letter || "" }}
+      {{
+        row?.[col - 1]?.letter ||
+        (props.renderInput ? props.input[col - 1] || "" : "")
+      }}
     </div>
   </div>
 </template>

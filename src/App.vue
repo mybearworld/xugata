@@ -16,6 +16,7 @@ const submit = (e: SubmitEvent) => {
     return;
   }
   guesses.value.push(guess.evaluation);
+  input.value = "";
 };
 </script>
 
@@ -24,5 +25,5 @@ const submit = (e: SubmitEvent) => {
     <input class="border" type="text" v-model="input" />
     <button>Submit</button>
   </form>
-  <GameGrid :evaluations="guesses" />
+  <GameGrid :evaluations="guesses" :input />
 </template>
