@@ -1,4 +1,5 @@
 import data from "./data.json";
+import { addGuessAmount } from "./storage";
 
 export type Evaluation = ColoredLetter[];
 export type ColoredLetter = {
@@ -65,6 +66,9 @@ export const newGame = (word: string) => {
         guess === word ? "success"
         : evaluations.length + 1 === MAX_GUESSES ? "fail"
         : "ongoing";
+      if (gameState === "success") {
+        addGuessAmount(evaluations.length);
+      }
       return { error: false, evaluation, gameState };
     },
   };
