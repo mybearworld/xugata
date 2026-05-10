@@ -1,3 +1,4 @@
+import type { Word } from "./currentWord";
 import data from "./data.json";
 import { addGuessAmount, setGameProgress } from "./storage";
 
@@ -5,6 +6,7 @@ export type Game = {
   state: GameState;
   evaluations: Evaluation[];
   guesses: string[];
+  word: Word;
   guess: (guess: string) => { error: true; msg: string } | { error: false };
 };
 export type Evaluation = ColoredLetter[];
@@ -18,9 +20,11 @@ export type GameState = "ongoing" | "success" | "fail";
 export const WORD_LENGTH = 5;
 export const MAX_GUESSES = 6;
 
-export const stringifyEvaluations = (evaluations: Evaluation[]) => {
-  const lines: string[] = [];
-  evaluations.forEach((evaluation) => {
+export const stringifyGame = (game: Game) => {
+  const lines: string[] = [
+    `Xugata #${game.word.number} — ${game.state === "fail" ? "X" : game.evaluations.length}/${MAX_GUESSES}`,
+  ];
+  game.evaluations.forEach((evaluation) => {
     lines.push(
       evaluation
         .map((letter) => {
@@ -31,14 +35,16 @@ export const stringifyEvaluations = (evaluations: Evaluation[]) => {
         .join(""),
     );
   });
+  lines.push("https://mybearworld.github.io/xugata");
   return lines.join("\n");
 };
 
-export const newGame = (word: string, guesses: string[] | null) => {
+export const newGame = (word: Word, guesses: string[] | null) => {
   const game: Game = {
     state: "ongoing",
     evaluations: [],
     guesses: [],
+    word,
     guess(guess) {
       if (this.state !== "ongoing") {
         return { error: true, msg: "Game is over" };
@@ -57,7 +63,7 @@ export const newGame = (word: string, guesses: string[] | null) => {
         return { error: true, msg: "Word not in dictionary" };
       }
       const colors = new Map<number, LetterColor>();
-      const wordArray = [...word];
+      const wordArray = [...word.word];
       const guessArray = [...guess];
       wordArray.forEach((wordLetter, i) => {
         if (wordLetter === guessArray[i]) {
@@ -82,7 +88,7 @@ export const newGame = (word: string, guesses: string[] | null) => {
       );
       this.evaluations.push(evaluation);
       this.state =
-        guess === word ? "success"
+        guess === word.word ? "success"
         : this.evaluations.length === MAX_GUESSES ? "fail"
         : "ongoing";
       if (this.state === "success") {

@@ -1,5 +1,10 @@
 import data from "./data.json";
 
+export type Word = {
+  word: string;
+  number: number;
+};
+
 const SEED = 1778404414407;
 export const NOW = new Date();
 
@@ -18,11 +23,12 @@ export const getResetTime = () => {
   return tomorrow;
 };
 
-export const currentWord = () => {
+export const currentWord = (): Word => {
   const prng = splitmix32(SEED);
   const date = new Date(data.start);
   const allWords: string[] = [];
   const words: string[] = [];
+  let number = 1;
   while (true) {
     const newWords = data.words[date.toISOString() as keyof typeof data.words];
     if (newWords) {
@@ -34,10 +40,11 @@ export const currentWord = () => {
     }
     const i = Math.floor(prng() * words.length);
     if (isISOToday(date)) {
-      return words[i];
+      return { word: words[i], number };
     }
     words.splice(i, 1);
     date.setUTCDate(date.getUTCDate() + 1);
+    number++;
   }
 };
 

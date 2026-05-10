@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { MAX_GUESSES, stringifyEvaluations, type Game } from "../lib/game";
+import { MAX_GUESSES, stringifyGame, type Game } from "../lib/game";
 import { getGuesses } from "../lib/storage";
 import { getResetTime } from "../lib/currentWord";
 import { ref } from "vue";
 
 const props = defineProps<{
-  word: string;
   game: Game;
 }>();
 
@@ -17,7 +16,7 @@ const resetTimeString = new Intl.DateTimeFormat("en-US", {
 
 const hasCopied = ref(false);
 const copyStats = () => {
-  navigator.clipboard.writeText(stringifyEvaluations(props.game.evaluations));
+  navigator.clipboard.writeText(stringifyGame(props.game));
   hasCopied.value = true;
   setTimeout(() => {
     hasCopied.value = false;
@@ -104,10 +103,10 @@ const copyStats = () => {
         </span>
         <span v-else>Better luck next time! The word was{{ " " }}</span>
         <a
-          :href="`https://batelu.sushii64.com/words?word=${props.word}`"
+          :href="`https://batelu.sushii64.com/words?word=${props.game.word.word}`"
           class="text-blue-300 uppercase hover:underline"
           target="_blank"
-          >{{ props.word }}</a
+          >{{ props.game.word.word }}</a
         >.
       </p>
       <p>

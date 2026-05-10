@@ -70,7 +70,6 @@ onBeforeUnmount(() => {
       @submit="makeGuess"
     />
     <StatsModal
-      :word="word"
       :game="game"
       v-if="game.state !== 'ongoing' && !animationOngoing"
     />
