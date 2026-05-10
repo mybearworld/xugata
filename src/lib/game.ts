@@ -8,7 +8,10 @@ export type Game = {
   guesses: string[];
   letterState: LetterState;
   word: Word;
-  guess: (guess: string) => { error: true; msg: string } | { error: false };
+  guess: (
+    guess: string,
+    isNew?: boolean,
+  ) => { error: true; msg: string } | { error: false };
 };
 export type Evaluation = ColoredLetter[];
 export type ColoredLetter = {
@@ -55,7 +58,7 @@ export const newGame = (word: Word, guesses: string[] | null) => {
     guesses: [],
     letterState: new Map(),
     word,
-    guess(guess) {
+    guess(guess, isNew = true) {
       if (this.state !== "ongoing") {
         return { error: true, msg: "The game's already over!" };
       }
@@ -110,7 +113,7 @@ export const newGame = (word: Word, guesses: string[] | null) => {
         guess === word.word ? "success"
         : this.evaluations.length === MAX_GUESSES ? "fail"
         : "ongoing";
-      if (this.state === "success") {
+      if (this.state === "success" && isNew) {
         addGuessAmount(this.evaluations.length);
       }
       this.guesses.push(guess);
@@ -119,7 +122,7 @@ export const newGame = (word: Word, guesses: string[] | null) => {
     },
   };
   guesses?.forEach((guess) => {
-    game.guess(guess);
+    game.guess(guess, false);
   });
   return game;
 };
