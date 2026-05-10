@@ -9,15 +9,17 @@ import {
 } from "./lib/game.ts";
 import GameGrid from "./components/GameGrid.vue";
 import MobileKeyboard from "./components/MobileKeyboard.vue";
+import StatsModal from "./components/StatsModal.vue";
 import { ANIMATION_DURATION } from "./lib/animationDuration.ts";
 
 const BATELU_LETTER = /^[a-pr-z]$/;
 
-const game = ref(newGame(currentWord()));
+const word = currentWord();
+const game = ref(newGame(word));
 const guesses = ref<Evaluation[]>([]);
 const gameState = ref<GameState>("ongoing");
 const input = ref("");
-const inputBlocked = ref(false);
+const animationOngoing = ref(false);
 
 const makeGuess = () => {
   const guess = game.value.guess(input.value);
@@ -28,14 +30,14 @@ const makeGuess = () => {
   guesses.value.push(guess.evaluation);
   gameState.value = guess.gameState;
   input.value = "";
-  inputBlocked.value = true;
+  animationOngoing.value = true;
   setTimeout(() => {
-    inputBlocked.value = false;
+    animationOngoing.value = false;
   }, ANIMATION_DURATION);
 };
 
 const addLetter = (letter: string) => {
-  if (inputBlocked.value) return;
+  if (animationOngoing.value) return;
   if (!BATELU_LETTER.test(letter)) return;
   if (input.value.length === WORD_LENGTH) return;
   input.value += letter;
@@ -74,6 +76,12 @@ onBeforeUnmount(() => {
       @type="addLetter"
       @backspace="backspace"
       @submit="makeGuess"
+    />
+    <StatsModal
+      :word="word"
+      :success="gameState === 'success'"
+      :todaysGuesses="guesses.length"
+      v-if="gameState !== 'ongoing' && !animationOngoing"
     />
   </div>
 </template>

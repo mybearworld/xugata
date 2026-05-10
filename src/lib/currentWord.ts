@@ -8,6 +8,16 @@ const isISOToday = (date: Date) =>
   date.getUTCMonth() === NOW.getUTCMonth() &&
   date.getUTCDate() === NOW.getUTCDate();
 
+export const getResetTime = () => {
+  const tomorrow = new Date(NOW);
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  tomorrow.setUTCHours(0);
+  tomorrow.setUTCMinutes(0);
+  tomorrow.setUTCMinutes(0);
+  tomorrow.setUTCMilliseconds(0);
+  return tomorrow;
+};
+
 export const currentWord = () => {
   const prng = splitmix32(SEED);
   const date = new Date(data.start);

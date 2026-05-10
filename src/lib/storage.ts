@@ -32,4 +32,4 @@ export const addGuessAmount = (guesses: number) => {
   writeToStorage();
 };
 
-export const guesses = () => storage.stats.guesses;
+export const getGuesses = () => storage.stats.guesses;
