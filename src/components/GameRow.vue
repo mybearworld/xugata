@@ -10,6 +10,7 @@ const props = defineProps<{
 
 <template>
   <div class="flex gap-1">
+    <!-- Ensure this is up to date with lib/animationDuration.ts -->
     <div
       class="flex h-12 w-12 items-center justify-center border text-2xl uppercase transition-colors delay-(--transition-delay) duration-200"
       :style="{
