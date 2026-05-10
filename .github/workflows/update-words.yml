@@ -4,6 +4,7 @@ on:
   schedule:
     # The time is arbitrary
     - cron: "40 20 * * *"
+  workflow_dispatch:
 
 jobs:
   build-deploy:
