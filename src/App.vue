@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { currentWord } from "./lib/currentWord.ts";
 import { type Evaluation, newGame } from "./lib/game.ts";
+import GameGrid from "./components/GameGrid.vue";
 
 const game = ref(newGame(currentWord()));
 const guesses = ref<Evaluation[]>([]);
@@ -23,18 +24,5 @@ const submit = (e: SubmitEvent) => {
     <input class="border" type="text" v-model="input" />
     <button>Submit</button>
   </form>
-  <div v-for="guess in guesses">
-    <div class="font-mono">
-      <span
-        :class="
-          letter.color === 'yellow' ? 'bg-amber-500'
-          : letter.color === 'green' ? 'bg-lime-500'
-          : 'bg-stone-500'
-        "
-        v-for="letter in guess.letters"
-        >{{ letter.letter }}</span
-      >
-      {{ guess.gameState }}
-    </div>
-  </div>
+  <GameGrid :evaluations="guesses" />
 </template>

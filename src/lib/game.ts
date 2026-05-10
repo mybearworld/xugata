@@ -11,8 +11,8 @@ export type ColoredLetter = {
 export type LetterColor = "gray" | "green" | "yellow";
 export type GameState = "ongoing" | "success" | "fail";
 
-const WORD_LENGTH = 5;
-const MAX_GUESSES = 6;
+export const WORD_LENGTH = 5;
+export const MAX_GUESSES = 6;
 
 export const newGame = (word: string) => {
   let gameState: GameState = "ongoing";
