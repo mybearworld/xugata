@@ -1,6 +1,6 @@
 import { z } from "zod/v4";
 
-const STORAGE_KEY = "wordyl:storage";
+const STORAGE_KEY = "xugata:storage";
 const STORAGE_SCHEMA = z.object({
   stats: z.object({
     guesses: z.record(z.number(), z.number()),
