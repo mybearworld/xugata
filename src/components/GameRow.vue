@@ -4,8 +4,7 @@ import { WORD_LENGTH } from "../lib/game";
 
 const props = defineProps<{
   evaluation: Evaluation | undefined;
-  input: string;
-  renderInput: boolean;
+  input: string | undefined;
 }>();
 </script>
 
@@ -25,10 +24,7 @@ const props = defineProps<{
       }"
       v-for="col in WORD_LENGTH"
     >
-      {{
-        evaluation?.[col - 1]?.letter ||
-        (props.renderInput ? props.input[col - 1] || "" : "")
-      }}
+      {{ evaluation?.[col - 1]?.letter || (props.input?.[col - 1] ?? "") }}
     </div>
   </div>
 </template>
