@@ -101,7 +101,7 @@ const copyStats = () => {
         <div class="w-2">{{ guessAmount }}</div>
         <div
           class="relative h-5 grow rounded-lg bg-stone-700"
-          :title="`${guesses[guessAmount] ?? 0} out of ${totalGuesses} games`"
+          :title="`${guesses[guessAmount] ?? 0} out of ${totalGuesses} game${totalGuesses === 1 ? '' : 's'}`"
         >
           <div
             class="absolute h-5 w-[--width] rounded-lg"
