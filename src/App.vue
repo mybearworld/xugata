@@ -52,5 +52,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <GameGrid :evaluations="guesses" :input />
+  <div class="flex h-screen flex-col items-center justify-center gap-5">
+    <h1 class="text-2xl">xuga wordyl</h1>
+    <GameGrid :evaluations="guesses" :input />
+  </div>
 </template>

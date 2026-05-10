@@ -12,12 +12,16 @@ const props = defineProps<{
 <template>
   <div class="flex gap-1">
     <div
-      class="flex h-8 w-8 items-center justify-center uppercase"
+      class="flex h-12 w-12 items-center justify-center border text-2xl uppercase transition-colors delay-(--transition-delay) duration-200"
+      :style="{
+        '--transition-delay': 300 * (col - 1) + 'ms',
+      }"
       :class="{
-        'rounded border border-stone-700 bg-stone-200': !evaluation,
-        'bg-amber-400': evaluation?.[col - 1]?.color === 'yellow',
-        'bg-lime-400': evaluation?.[col - 1]?.color === 'green',
-        'bg-stone-400': evaluation?.[col - 1]?.color === 'gray',
+        'rounded border-stone-700 font-bold': !evaluation,
+        'border-transparent': evaluation,
+        'bg-yellow-700 font-bold': evaluation?.[col - 1]?.color === 'yellow',
+        'bg-lime-800 font-bold': evaluation?.[col - 1]?.color === 'green',
+        'bg-stone-700 font-bold': evaluation?.[col - 1]?.color === 'gray',
       }"
       v-for="col in WORD_LENGTH"
     >
