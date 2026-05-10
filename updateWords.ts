@@ -40,13 +40,11 @@ const getNewWords = async () => {
 const tomorrowString = () => {
   const tomorrow = new Date();
   tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-  return (
-    tomorrow.getUTCFullYear() +
-    "-" +
-    (tomorrow.getUTCMonth() + 1).toString().padStart(2, "0") +
-    "-" +
-    tomorrow.getUTCDate().toString().padStart(2, "0")
-  );
+  tomorrow.setUTCHours(0);
+  tomorrow.setUTCMinutes(0);
+  tomorrow.setUTCSeconds(0);
+  tomorrow.setUTCMilliseconds(0);
+  return tomorrow.toISOString();
 };
 
 const updateFile = async () => {
