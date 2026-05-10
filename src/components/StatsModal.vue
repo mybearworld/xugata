@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import {
-  MAX_GUESSES,
-  stringifyEvaluations,
-  type Evaluation,
-} from "../lib/game";
+import { MAX_GUESSES, stringifyEvaluations, type Game } from "../lib/game";
 import { getGuesses } from "../lib/storage";
 import { getResetTime } from "../lib/currentWord";
 import { ref } from "vue";
 
 const props = defineProps<{
   word: string;
-  success: boolean;
-  evaluations: Evaluation[];
+  game: Game;
 }>();
 
 const guesses = getGuesses();
@@ -22,7 +17,7 @@ const resetTimeString = new Intl.DateTimeFormat("en-US", {
 
 const hasCopied = ref(false);
 const copyStats = () => {
-  navigator.clipboard.writeText(stringifyEvaluations(props.evaluations));
+  navigator.clipboard.writeText(stringifyEvaluations(props.game.evaluations));
   hasCopied.value = true;
   setTimeout(() => {
     hasCopied.value = false;
@@ -101,9 +96,9 @@ const copyStats = () => {
         </div>
       </div>
       <p>
-        <span v-if="props.success">
-          Well done! You took {{ props.evaluations.length }} guess{{
-            props.evaluations.length === 1 ? "" : "es"
+        <span v-if="props.game.state === 'success'">
+          Well done! You took {{ props.game.evaluations.length }} guess{{
+            props.game.evaluations.length === 1 ? "" : "es"
           }}
           to guess
         </span>

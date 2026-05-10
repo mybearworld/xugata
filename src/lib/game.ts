@@ -1,6 +1,11 @@
 import data from "./data.json";
 import { addGuessAmount } from "./storage";
 
+export type Game = {
+  state: GameState;
+  evaluations: Evaluation[];
+  guess: (guess: string) => { error: true; msg: string } | { error: false };
+};
 export type Evaluation = ColoredLetter[];
 export type ColoredLetter = {
   letter: string;
@@ -29,15 +34,11 @@ export const stringifyEvaluations = (evaluations: Evaluation[]) => {
 };
 
 export const newGame = (word: string) => {
-  let gameState: GameState = "ongoing";
-  const evaluations: Evaluation[] = [];
-  return {
-    guess: (
-      guess: string,
-    ):
-      | { error: true; msg: string }
-      | { error: false; evaluation: Evaluation; gameState: GameState } => {
-      if (gameState !== "ongoing") {
+  const game: Game = {
+    state: "ongoing",
+    evaluations: [],
+    guess(guess) {
+      if (this.state !== "ongoing") {
         return { error: true, msg: "Game is over" };
       }
       if (guess.length < WORD_LENGTH) {
@@ -77,15 +78,16 @@ export const newGame = (word: string) => {
           color: colors.get(i) || "gray",
         }),
       );
-      evaluations.push(evaluation);
-      gameState =
+      this.evaluations.push(evaluation);
+      this.state =
         guess === word ? "success"
-        : evaluations.length + 1 === MAX_GUESSES ? "fail"
+        : this.evaluations.length + 1 === MAX_GUESSES ? "fail"
         : "ongoing";
-      if (gameState === "success") {
-        addGuessAmount(evaluations.length);
+      if (this.state === "success") {
+        addGuessAmount(this.evaluations.length);
       }
-      return { error: false, evaluation, gameState };
+      return { error: false };
     },
   };
+  return game;
 };
