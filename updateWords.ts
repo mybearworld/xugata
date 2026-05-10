@@ -51,7 +51,7 @@ const updateFile = async () => {
   const newWords = await getNewWords();
   if (newWords.size === 0) {
     console.log("No new words. Quitting.");
-    return;
+    return 1;
   }
   const tomorrow = tomorrowString();
   const newData = { ...data };
@@ -61,6 +61,7 @@ const updateFile = async () => {
   ];
   await writeFile("./src/lib/data.json", JSON.stringify(newData));
   console.log(`Added ${newWords.size} new word(s).`);
+  return 0;
 };
 
-await updateFile();
+process.exit(await updateFile());
