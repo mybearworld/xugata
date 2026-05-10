@@ -57,20 +57,20 @@ export const newGame = (word: Word, guesses: string[] | null) => {
     word,
     guess(guess) {
       if (this.state !== "ongoing") {
-        return { error: true, msg: "Game is over" };
+        return { error: true, msg: "The game's already over!" };
       }
       if (guess.length < WORD_LENGTH) {
-        return { error: true, msg: "Word too short" };
+        return { error: true, msg: "That word is too short!" };
       }
       if (guess.length > WORD_LENGTH) {
-        return { error: true, msg: "Word too long" };
+        return { error: true, msg: "That word is too long!" };
       }
       if (
         !Object.values(data.words).some((words) =>
           words.some((word) => word === guess),
         )
       ) {
-        return { error: true, msg: "Word not in dictionary" };
+        return { error: true, msg: "That word is not in the dictionary!" };
       }
       const colors = new Map<number, LetterColor>();
       const wordArray = [...word.word];
