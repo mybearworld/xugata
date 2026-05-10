@@ -1,3 +1,5 @@
+import data from "./data.json";
+
 export type Evaluation = {
   letters: ColoredLetter[];
   gameState: GameState;
@@ -29,6 +31,13 @@ export const newGame = (word: string) => {
       }
       if (guess.length > WORD_LENGTH) {
         return { error: true, msg: "Word too long" };
+      }
+      if (
+        !Object.values(data.words).some((words) =>
+          words.some((word) => word === guess),
+        )
+      ) {
+        return { error: true, msg: "Word not in dictionary" };
       }
       const colors = new Map<number, LetterColor>();
       const wordArray = [...word];
