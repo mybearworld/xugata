@@ -103,7 +103,9 @@ onBeforeUnmount(() => {
 <template>
   <div class="flex h-screen flex-col items-center justify-center gap-5">
     <header class="text-center">
-      <h1 class="text-2xl">Xugata</h1>
+      <h1 class="text-2xl">
+        Xugata <span class="text-lg">#{{ game.word.number }}</span>
+      </h1>
       <div>
         <button
           class="cursor-pointer text-blue-300 hover:underline"
