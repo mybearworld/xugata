@@ -2,12 +2,17 @@
 import { MAX_GUESSES, stringifyGame, type Game } from "../lib/game";
 import { getGuesses } from "../lib/storage";
 import { getResetTime } from "../lib/currentWord";
-import { ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import Modal from "./Modal.vue";
 
 const props = defineProps<{
   game: Game;
 }>();
+
+const MILLISECOND = 1;
+const SECOND = MILLISECOND * 1000;
+const MINUTE = SECOND * 60;
+const HOUR = MINUTE * 60;
 
 const open = defineModel<boolean>("open");
 const close = () => {
@@ -16,9 +21,38 @@ const close = () => {
 
 const guesses = getGuesses();
 const totalGuesses = Object.values(guesses).reduce((a, b) => a + b, 0);
+const resetTime = getResetTime();
 const resetTimeString = new Intl.DateTimeFormat("en-US", {
   timeStyle: "short",
-}).format(getResetTime());
+}).format(resetTime);
+const resetTimeInterval = ref<number>();
+const resetTimeCountdown = ref<string>();
+onMounted(() => {
+  resetTimeInterval.value = setInterval(() => {
+    const now = Date.now();
+    const reset = resetTime.getTime();
+    if (now >= reset) {
+      resetTimeCountdown.value = undefined;
+      return;
+    }
+    resetTimeCountdown.value = undefined;
+    const dist = reset - now;
+    const hours = Math.floor(dist / HOUR);
+    const minutes = Math.floor((dist - hours * HOUR) / MINUTE);
+    const seconds = Math.floor(
+      (dist - hours * HOUR - minutes * MINUTE) / SECOND,
+    );
+    resetTimeCountdown.value =
+      hours.toString().padStart(2, "0") +
+      ":" +
+      minutes.toString().padStart(2, "0") +
+      ":" +
+      seconds.toString().padStart(2, "0");
+  }, 100);
+});
+onBeforeUnmount(() => {
+  clearInterval(resetTimeInterval.value);
+});
 
 const hasCopied = ref(false);
 const copyStats = () => {
@@ -130,9 +164,15 @@ const copyStats = () => {
         >{{ props.game.word.word }}</a
       >.
     </p>
-    <p>
-      Want to guess another word tomorrow? The word resets at
-      {{ resetTimeString }} your time.
-    </p>
+    <template v-if="resetTimeCountdown">
+      <p>Want to guess another word tomorrow? The word resets in:</p>
+      <p class="text-center">
+        <span class="text-3xl">{{ resetTimeCountdown }}</span> <br />
+        <span class="text-sm">({{ resetTimeString }} your time)</span>
+      </p>
+    </template>
+    <template v-else>
+      <p>Want to guess another word? Reload to play today's word.</p>
+    </template>
   </Modal>
 </template>
