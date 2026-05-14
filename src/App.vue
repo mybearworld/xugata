@@ -69,6 +69,7 @@ const makeGuess = () => {
 };
 
 const addLetter = (letter: string) => {
+  if (game.state !== "ongoing") return;
   if (animationOngoing.value) return;
   if (!BATELU_LETTER.test(letter)) return;
   if (input.value.length === WORD_LENGTH) return;
@@ -79,7 +80,6 @@ const backspace = () => {
 };
 
 const keydownEventListener = (e: KeyboardEvent) => {
-  if (game.state !== "ongoing") return;
   switch (e.key) {
     case "Backspace":
       e.preventDefault();
