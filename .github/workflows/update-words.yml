@@ -10,7 +10,7 @@ jobs:
   update-words:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v6
 
       - name: Setup Node
         uses: actions/setup-node@v1
@@ -21,7 +21,6 @@ jobs:
           if node updateWords.ts; then
             git config user.name "github-actions[bot]"
             git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-            git switch main
             git add .
             git commit -m "Update data.json"
             git push
