@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@v1
@@ -22,9 +24,7 @@ jobs:
 
       - run: |
           if node updateWords.ts; then
-            git config user.name "github-actions[bot]"
-            git config user.email 41898282+github-actions[bot]@users.noreply.github.com
             git add .
-            git commit -m "Update data.json"
+            git commit -m "[update-words.yml] Update data.json"
             git push
           fi
