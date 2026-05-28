@@ -24,6 +24,8 @@ jobs:
 
       - run: |
           if node updateWords.ts; then
+            git config --global user.email "130385691+mybearworld@users.noreply.github.com"
+            git config --global user.name "mybearworld"
             git add .
             git commit -m "[update-words.yml] Update data.json"
             git push
