@@ -1,5 +1,5 @@
 import type { Word } from "./currentWord";
-import data from "./data.json";
+import { data } from "./data.ts";
 import { addGuessAmount, setGameProgress } from "./storage";
 
 export type Game = {
@@ -70,7 +70,7 @@ export const newGame = (word: Word, guesses: string[] | null) => {
       }
       if (
         !Object.values(data.words).some((words) =>
-          words.some((word) => word === guess),
+          words.added.some((word) => word === guess),
         )
       ) {
         return { error: true, msg: "That word is not in the dictionary!" };

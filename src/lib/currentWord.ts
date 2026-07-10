@@ -1,4 +1,4 @@
-import data from "./data.json";
+import { data } from "./data.ts";
 
 export type Word = {
   word: string;
@@ -26,14 +26,18 @@ export const getResetTime = () => {
 export const currentWord = (): Word => {
   const prng = splitmix32(SEED);
   const date = new Date(data.start);
-  const allWords: string[] = [];
-  const words: string[] = [];
+  let allWords: string[] = [];
+  let words: string[] = [];
   let number = 1;
   while (true) {
     const newWords = data.words[date.toISOString() as keyof typeof data.words];
     if (newWords) {
-      allWords.push(...newWords);
-      words.push(...newWords);
+      allWords.push(...newWords.added);
+      words.push(...newWords.added);
+      if (newWords.removed) {
+        allWords = allWords.filter((word) => !newWords.removed.includes(word));
+        words = words.filter((word) => !newWords.removed.includes(word));
+      }
     }
     if (words.length === 0) {
       words.push(...allWords);
